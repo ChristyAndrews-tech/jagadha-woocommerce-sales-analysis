@@ -2,7 +2,8 @@
 
 A data cleaning and exploratory sales analysis project built in Power BI. It covers 690 orders from the Jagadha by Padanjaly WooCommerce store (January 2023 to May 2026) and ends in a one-page dashboard, a written report with insights, and business recommendations.
 
-![Exploratory Sales Analysis dashboard](images/sales_dashboard.jpg)
+### Dashboard View
+👉 [Download / View Dashboard PDF](images/sales_dashboard.pdf)
 
 ## Project objective
 
