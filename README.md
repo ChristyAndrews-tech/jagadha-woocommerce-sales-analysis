@@ -1,4 +1,4 @@
-# Exploratory Sales Analysis: Jagadha by Padanjaly WooCommerce Orders
+# Project 1: Exploratory Sales Analysis (Jagadha by Padanjaly WooCommerce Orders)
 
 A data cleaning and exploratory sales analysis project built in Power BI. It covers 690 orders from the Jagadha by Padanjaly WooCommerce store (January 2023 to May 2026) and ends in a one-page dashboard, a written report with insights, and business recommendations.
 
@@ -153,7 +153,6 @@ International Revenue % = DIVIDE(CALCULATE([Total Revenue], 'Orders (2)'[billing
 - The product matrix reads Product Item 1 only, and its Telangana column is beyond the visible width of the matrix (scroll to see it).
 - Singapore ranks second in revenue but shows few units in the matrix, so its orders probably include packs or products outside the top five listed.
 - "States and Regions" includes non-Indian regions such as Singapore and England.
-- Repeat orders by location and month were not analysed, and could be the next step.
 - The reasons given for the insights are likely explanations and need more data to confirm.
 
 ## Files for this project
