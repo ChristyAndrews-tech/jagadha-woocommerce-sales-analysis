@@ -100,7 +100,8 @@ Data analysis project, October 2026
 
 A second Power BI dashboard, built on the same data, that looks at **where** the sales come from: by country, state and city.
 
-![Location Sales Analysis dashboard](images/location_dashboard.pdf)
+### Dashboard View
+👉 [Location Sales Analysis dashboard](images/location_dashboard.pdf)
 
 ## Objective
 
