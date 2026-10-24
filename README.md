@@ -93,3 +93,74 @@ Total Revenue USD = CALCULATE(SUM(Orders[order_subtotal]), Orders[order_currency
 
 **Christy Andrews**
 Data analysis project, October 2026
+
+---
+
+# Project 2: Location Sales Analysis
+
+A second Power BI dashboard, built on the same data, that looks at **where** the sales come from: by country, state and city.
+
+![Location Sales Analysis dashboard](images/location_dashboard.pdf)
+
+## Objective
+
+Analyse sales by country, state and city to identify high and low performing locations, and create geographical insights and visuals that show regional sales performance.
+
+## Data preparation
+
+The location columns were typed by customers, so they were cleaned in Power Query. The original columns were kept next to the new ones.
+
+- **`billing_state_full`:** short codes (KL, TN, TS and so on) converted to full names using the country, then checked against the postcode and city. Wrong entries were corrected (for example Karaikal to Puducherry, Vadodara to Gujarat, Coimbatore to Tamil Nadu, Sugar Hill to Georgia). UK rows were grouped as England, Wales or Northern Ireland.
+- **`billing_country_full`:** country codes converted to full names, with the city and postcode used when the code was blank.
+- **`billing_city_full` and `shipping_city_full`:** one reusable Power Query function merged spelling variants (Trivandrum and Thiruvananthapuram, Bangalore and Bengaluru, Calicut and Kozhikode) and used the postcode to fix wrong cities.
+- **`state_match`, `country_match` and `city_match`:** each order is marked **Same** or **Different** when comparing billing and shipping locations.
+
+## Dashboard
+
+One page with 5 KPI cards, 6 visuals and a Key Insights box:
+
+- **KPIs:** Countries Served, States and Regions Served, International Revenue %, Top Country Revenue (India), Top State Share %
+- **Visuals:** world map of revenue by billing country, top 5 states by revenue, bottom 5 states by revenue, treemap of top cities, matrix of units sold by product in the top states, and a donut chart of billing vs shipping city
+
+Example measures:
+
+```DAX
+Countries Served = DISTINCTCOUNTNOBLANK('Orders (2)'[billing_country_full])
+States & Regions Served = DISTINCTCOUNTNOBLANK('Orders (2)'[billing_state_full])
+Top State Share % = DIVIDE(MAXX(VALUES('Orders (2)'[billing_state_full]), [Total Revenue]), [Total Revenue])
+International Revenue % = DIVIDE(CALCULATE([Total Revenue], 'Orders (2)'[billing_country_full] <> "India" && NOT ISBLANK('Orders (2)'[billing_country_full])), [Total Revenue])
+```
+
+## Key insights
+
+1. **International sales:** 46.49% of revenue comes from outside India, with Singapore as the strongest overseas market. India accounts for ₹1.35M.
+2. **Top states:** Kerala leads (14.39% of revenue), then Singapore, Maharashtra, Tamil Nadu and Telangana. No state dominates, and orders came from 24 countries and 73 states and regions.
+3. **Low performers:** the bottom states (Chandigarh, Jammu and Kashmir, Jharkhand and others) earned only about ₹1,600 to ₹2,600 each, so they are untapped markets and not failures.
+4. **Top cities:** Singapore, Hyderabad and Bengaluru lead, then Thiruvananthapuram and Mumbai. Two US cities, Sugar Hill and Spring, also rank in the top eight.
+5. **Top products:** Agnijith 90 gm sells in all five top states (94 units in Kerala, 54 in Maharashtra, 53 in Tamil Nadu and 27 in Telangana), while Agnihari leads only in Kerala (126 units).
+6. **Billing vs shipping:** 682 of 690 orders (98.84%) ship to the billing city.
+
+## Recommendations
+
+1. Defend Kerala with repeat-order offers, and grow the south Indian metros (Hyderabad, Bengaluru, Chennai).
+2. Build the overseas market, starting with Singapore, then the UAE, UK and US, after checking each country's import rules.
+3. Lead campaigns outside Kerala with Agnijith 90 gm, and use Agnihari as the lower-priced entry product.
+4. Test the low performing states with small, cheap campaigns before spending more.
+5. Use drop-down lists for state and city at checkout, so the data needs less cleaning.
+
+## Limitations
+
+- The product matrix reads Product Item 1 only, and its Telangana column is beyond the visible width of the matrix (scroll to see it).
+- Singapore ranks second in revenue but shows few units in the matrix, so its orders probably include packs or products outside the top five listed.
+- "States and Regions" includes non-Indian regions such as Singapore and England.
+- Repeat orders by location and month were not analysed, and could be the next step.
+- The reasons given for the insights are likely explanations and need more data to confirm.
+
+## Files for this project
+
+```
+├── report/
+│   └── Location_Sales_Analysis_Final_Report.docx
+└── images/
+    └── location_dashboard.pdf
+```
