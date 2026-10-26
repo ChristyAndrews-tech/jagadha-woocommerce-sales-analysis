@@ -115,6 +115,7 @@ The location columns were typed by customers, so they were cleaned in Power Quer
 - **`billing_country_full`:** country codes converted to full names, with the city and postcode used when the code was blank.
 - **`billing_city_full` and `shipping_city_full`:** one reusable Power Query function merged spelling variants (Trivandrum and Thiruvananthapuram, Bangalore and Bengaluru, Calicut and Kozhikode) and used the postcode to fix wrong cities.
 - **`state_match`, `country_match` and `city_match`:** each order is marked **Same** or **Different** when comparing billing and shipping locations.
+- **`Region Type` :** each region is marked as **India** or **International**.
 
 ## Dashboard
 
@@ -135,8 +136,8 @@ International Revenue % = DIVIDE(CALCULATE([Total Revenue], 'Orders (2)'[billing
 ## Key insights
 
 1. **International sales:** 46.49% of revenue comes from outside India, with Singapore as the strongest overseas market. India accounts for ₹1.35M.
-2. **Top states:** Kerala leads (14.39% of revenue), then Singapore, Maharashtra, Tamil Nadu and Telangana. No state dominates, and orders came from 24 countries and 73 states and regions.
-3. **Low performers:** the bottom states (Chandigarh, Jammu and Kashmir, Jharkhand and others) earned only about ₹1,600 to ₹2,600 each, so they are untapped markets and not failures.
+2. **Top Indian states:** Kerala leads (14.39% of revenue), then Maharashtra, Tamil Nadu and Telangana. No state dominates, and orders came from 24 countries and 73 states and regions.
+3. **Low performers:** the bottom states (Chandigarh, Jammu and Kashmir, Jharkhand and others) earned only about ₹2,100 to ₹2,600 each, so they are untapped markets and not failures.
 4. **Top cities:** Singapore, Hyderabad and Bengaluru lead, then Thiruvananthapuram and Mumbai. Two US cities, Sugar Hill and Spring, also rank in the top eight.
 5. **Top products:** Agnijith 90 gm sells in all five top states (94 units in Kerala, 54 in Maharashtra, 53 in Tamil Nadu and 27 in Telangana), while Agnihari leads only in Kerala (126 units).
 6. **Billing vs shipping:** 682 of 690 orders (98.84%) ship to the billing city.
