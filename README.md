@@ -165,3 +165,79 @@ International Revenue % = DIVIDE(CALCULATE([Total Revenue], 'Orders (2)'[billing
 └── images/
     └── location_dashboard.pdf
 ```
+## Project 3: Product Performance Analysis
+
+A third Power BI dashboard, built on the same data, that looks at **which products drive revenue, how pack types perform over time, and which products sell best across different regions.**
+
+### Dashboard View
+👉 [Product Performance Analysis dashboard](images/product_dashboard.pdf)
+
+## Objective
+
+Analyse product revenue and quantity sold to identify top-performing products, compare single packs, multi-packs and combo packs, track quarterly revenue trends, and understand which products perform best across Indian states and international markets.
+
+## Data preparation
+
+Product details were spread across four sets of columns in the original orders table. These were combined into one product-level table in Power Query.
+
+- **`Products_Item1` to `Products_Item4`:** Referenced the original orders query, selected the relevant order and product columns, and renamed the product fields consistently.
+- **`Products` table:** Appended all four queries into one table containing 822 rows (690 from Item 1, 108 from Item 2, 22 from Item 3 and 2 from Item 4).
+- **Data types:** Set order IDs and quantities to whole numbers, order dates to dates, product IDs to text, and totals and subtotals to decimal numbers.
+- **`product_total_INR` and `product_subtotal_INR`:** Converted USD values to INR using the exchange rate stored with each order, while retaining INR values as they were.
+- **`product_name`:** Trimmed product names and corrected spelling variations, including Agnihari and the Agnijith–Kasmeerini combo pack.
+- **`pack_type`:** Classified products as **Single**, **Multi-pack** or **Combo** based on their names.
+- **Query loading:** Disabled loading for the four helper queries and kept the appended `Products` table loaded into the model.
+- **`Region Type`:** Classified orders as India or International for comparing product performance across Indian states and other regions.
+
+## Dashboard
+
+One page with 5 KPI cards, 5 main visuals, 2 product tables and a Key Insights box:
+
+- **KPIs:** Quantity Sold, Avg Revenue per Pack, Top Product, Top Product Share %, Total Products.
+- **Visuals:** Revenue by product, quarterly revenue by pack type, revenue by pack type, top product in each Indian state, and top product in other regions.
+- **Tables:** Product performance by Indian state and by international region, showing the leading product, quantity sold and total revenue.
+
+Example measures:
+
+```DAX
+Total Revenue (Products) = SUM(Products[product_subtotal_INR])
+Quantity Sold = SUM(Products[quantity])
+Total Products = DISTINCTCOUNT(Products[product_name])
+Top Product = CONCATENATEX(TOPN(1, VALUES(Products[product_name]), [Total Revenue (Products)], DESC), Products[product_name], ", ")
+Top Product Share % = DIVIDE(MAXX(VALUES(Products[product_name]), [Total Revenue (Products)]), [Total Revenue (Products)])
+Avg Revenue per Pack = DIVIDE([Total Revenue (Products)], [Quantity Sold])
+Top Product in State = CONCATENATEX(TOPN(1, VALUES(Products[product_name]), [Quantity Sold], DESC), Products[product_name], ", ")
+```
+
+## Key insights
+
+1. **Top product:** Agnijith 90 gms generates approximately ₹1.24M in revenue, nearly four times the next product.
+2. **Volume vs revenue:** Agnijith 90 gms contributes about 47% of units sold and 49.05% of revenue.
+3. **Revenue trend:** Product revenue has grown since 2023, with single-pack revenue reaching approximately ₹260K and multi-pack revenue approximately ₹218K in the strongest period shown.
+4. **Pack type:** Single packs contribute 58.05% of revenue, multi-packs 39.24%, and combo packs 2.71%.
+5. **Top state:** Kerala leads its state table with 355 units for its leading product, Agnihari 90 gms. Agnijith 90 gms leads in most of the other Indian states shown.
+6. **International sales:** Singapore leads the other-region table, with 18 units and approximately ₹2.11L in revenue from the Agnijith two-pack.
+
+## Recommendations
+
+1. Maintain availability of Agnijith 90 gms and test targeted promotions to sustain its strong performance.
+2. Promote multi-packs to increase their contribution, particularly in international markets.
+3. Test bundles and targeted offers to explore opportunities for combo packs.
+4. Tailor regional campaigns around Agnihari in Kerala and Agnijith 90 gms in other strong Indian states.
+5. Track quarterly revenue by pack type to identify trends and plan inventory and promotions.
+
+## Limitations
+
+- Product quantities and revenue are analysed using the appended product-level table rather than treating each order as a single product.
+- Pack type is classified from product names, so naming inconsistencies can affect classification.
+- Top-product measures depend on the current filter context.
+- The dashboard shows product performance and trends but does not establish why demand changes or whether promotions would generate additional sales.
+
+## Files for this project
+
+```text
+├── report/
+│   └── Product_Performance_Analysis_Final_Report.docx
+└── images/
+    └── product_dashboard.pdf
+```
