@@ -3,7 +3,7 @@
 A data cleaning and exploratory sales analysis project built in Power BI. It covers 690 orders from the Jagadha by Padanjaly WooCommerce store (January 2023 to May 2026) and ends in a one-page dashboard, a written report with insights, and business recommendations.
 
 ### Dashboard View
-👉 [Download / View Dashboard PDF](images/sales_dashboard.pdf)
+👉 [Download / View Dashboard PDF](dashboards/Padanjaly_Sales_Dashboards.pdf#page=1)
 
 ## Project objective
 
@@ -85,8 +85,8 @@ Total Revenue USD = CALCULATE(SUM(Orders[order_subtotal]), Orders[order_currency
 ├── README.md
 ├── report/
 │   └── Jagadha_Sales_Analysis_Final_Report.docx
-└── images/
-    └── sales_dashboard.jpg
+└── dashboards/
+    └── Padanjaly_Sales_Dashboards.pdf
 ```
 
 ## Author
@@ -101,7 +101,7 @@ Data analysis project, October 2026
 A second Power BI dashboard, built on the same data, that looks at **where** the sales come from: by country, state and city.
 
 ### Dashboard View
-👉 [Location Sales Analysis dashboard](images/location_dashboard.pdf)
+👉 [Location Sales Analysis dashboard](dashboards/Padanjaly_Sales_Dashboards.pdf#page=2)
 
 ## Objective
 
@@ -162,15 +162,15 @@ International Revenue % = DIVIDE(CALCULATE([Total Revenue], 'Orders (2)'[billing
 ```
 ├── report/
 │   └── Location_Sales_Analysis_Final_Report.docx
-└── images/
-    └── location_dashboard.pdf
+└── dashboards/
+    └── Padanjaly_Sales_Dashboards.pdf
 ```
-## Project 3: Product Performance Analysis
+# Project 3: Product Performance Analysis
 
 A third Power BI dashboard, built on the same data, that looks at **which products drive revenue, how pack types perform over time, and which products sell best across different regions.**
 
 ### Dashboard View
-👉 [Product Performance Analysis dashboard](images/product_dashboard.pdf)
+👉 [Product Performance Analysis dashboard](dashboards/Padanjaly_Sales_Dashboards.pdf#page=3)
 
 ## Objective
 
@@ -229,7 +229,6 @@ Top Product in State = CONCATENATEX(TOPN(1, VALUES(Products[product_name]), [Qua
 ## Limitations
 
 - Product quantities and revenue are analysed using the appended product-level table rather than treating each order as a single product.
-- Pack type is classified from product names, so naming inconsistencies can affect classification.
 - Top-product measures depend on the current filter context.
 - The dashboard shows product performance and trends but does not establish why demand changes or whether promotions would generate additional sales.
 
@@ -238,6 +237,90 @@ Top Product in State = CONCATENATEX(TOPN(1, VALUES(Products[product_name]), [Qua
 ```text
 ├── report/
 │   └── Product_Performance_Analysis_Final_Report.docx
-└── images/
-    └── product_dashboard.pdf
+└── dashboards/
+    └── Padanjaly_Sales_Dashboards.pdf
+```
+# Project 4: Customer Behaviour Analysis
+
+A fourth Power BI dashboard, built on the same data, that looks at **who is buying, how often they come back, and where they are**: registered customers, guest orders, repeat buying and customer locations.
+
+### Dashboard View
+👉 [Customer Behaviour Analysis dashboard](dashboards/Padanjaly_Sales_Dashboards.pdf#page=4)
+
+## Objective
+
+Analyse customer behaviour to measure registered customers, repeat buying, order frequency and spend per customer, compare guest and registered orders across Indian states and Kerala cities, and find opportunities to improve customer retention.
+
+## Data preparation
+
+The orders table records every order but has no table of customers, and guest orders carry a customer ID of 0. A separate customer table was built for registered customers only.
+
+- **`Customers` table:** Created as a calculated table with one row per registered customer (customer ID other than 0). For each customer it holds the number of orders, total spend in INR, first order date and last order date.
+- **Relationship:** Joined `Customers[customer_id]` to the orders table's `customer_id`, with one customer linked to many orders.
+- **`Order Frequency`:** Added a column that marks each registered customer as **One-time** (1 order) or **Repeat** (2 or more orders).
+- **Guest vs registered:** Used the existing `customer_type` column to split orders in the state and city charts. Guest Order % was reused from the sales dashboard.
+- **Slicers:** Added Year and `billing_country_full` slicers that filter the whole page.
+
+## Dashboard
+
+One page with 5 KPI cards, 2 slicers, 4 visuals and a Key Insights box:
+
+- **KPIs:** Registered Customers, Repeat Registered Customers %, Guest Order %, Avg Orders per Registered Customer, Avg Spend per Registered Customer.
+- **Visuals:** Guest vs registered orders by Indian state, guest vs registered orders in Kerala cities, registered customers and revenue by quarter, and a donut chart of one-time vs repeat registered customers.
+
+Example measures:
+
+```DAX
+Customers =
+ADDCOLUMNS(
+    FILTER(VALUES('Orders (2)'[customer_id]), 'Orders (2)'[customer_id] <> 0),
+    "Orders", CALCULATE(DISTINCTCOUNT('Orders (2)'[order_id])),
+    "Total Spend", CALCULATE(SUM('Orders (2)'[order_subtotal_INR])),
+    "First Order", CALCULATE(MIN('Orders (2)'[order_date])),
+    "Last Order", CALCULATE(MAX('Orders (2)'[order_date]))
+)
+
+Registered Customers = CALCULATE(DISTINCTCOUNT('Orders (2)'[customer_id]), 'Orders (2)'[customer_id] <> 0)
+Repeat Registered Customers % = DIVIDE(COUNTROWS(FILTER(CALCULATETABLE(VALUES('Orders (2)'[customer_id]), 'Orders (2)'[customer_id] <> 0), CALCULATE(DISTINCTCOUNT('Orders (2)'[order_id])) >= 2)), [Registered Customers])
+Avg Orders per Registered Customer = DIVIDE(CALCULATE(DISTINCTCOUNT('Orders (2)'[order_id]), 'Orders (2)'[customer_id] <> 0), [Registered Customers])
+Avg Spend per Registered Customer = DIVIDE(CALCULATE(SUM('Orders (2)'[order_subtotal_INR]), 'Orders (2)'[customer_id] <> 0), [Registered Customers])
+Order Frequency = IF(Customers[Orders] = 1, "One-time", "Repeat")
+```
+
+## Key insights
+
+1. **Low repeat buying:** Of 323 registered customers, only 6.50% (about 21) ordered again and 93.5% ordered once, so the average is 1.08 orders per customer.
+2. **Guest orders:** 49.28% of the 690 orders (about 340) are guest orders that cannot be linked to a customer. The sales dashboard shows the guest share of revenue rising every year.
+3. **Customer value:** A registered customer spends about ₹4.19K in total, close to one average order (₹3.66K), so most of a customer's value comes from the first purchase.
+4. **Top state:** Kerala has about 235 orders, more than three times Maharashtra (about 73), Tamil Nadu (about 70) and Karnataka (about 68).
+5. **Guest vs registered by state:** About 145 of Kerala's 235 orders are guest orders, while registered customers place the larger share in Maharashtra, Tamil Nadu, Karnataka and Telangana.
+6. **Kerala cities:** Thiruvananthapuram (about 29) and Thrissur (about 28) lead, followed by Kozhikode (about 18). Kannur, Kasaragod, Kottayam and Malappuram have only about 5 to 7 orders each.
+7. **Trend:** Registered customers peaked at about 47 in Qtr 3 2024, while revenue peaked later, at about ₹0.4M in Qtr 4 2025 and Qtr 2 2026, when registered customers were about 31 and 39. Revenue includes guest orders, so its growth is no longer matched by registered customers.
+
+## Recommendations
+
+1. Bring one-time buyers back with a follow-up message after delivery, reorder reminders and a small repeat-order offer.
+2. Encourage account creation at checkout, for example with order tracking or a first-registration discount, so more guest orders can be linked to customers.
+3. Collect a phone number or email from guest buyers so returning guests can be recognised.
+4. Run local campaigns in Thiruvananthapuram, Thrissur and Kozhikode, and try to convert Kerala guest buyers into registered customers.
+5. Use repeat-order offers in Maharashtra, Tamil Nadu, Karnataka and Telangana, where registered customers are the larger group, and test the response.
+6. Use the first and last order dates in the `Customers` table to measure the days between orders and time reminders.
+
+## Limitations
+
+- Registered customers means customer ID other than 0, so guests are not counted as customers.
+- The repeat rate may be understated, because a guest who orders again cannot be recognised.
+- Repeat means two or more orders in the data, so recent customers may not have had time to reorder.
+- The revenue line in the quarterly chart is total revenue, including guest orders, not revenue from registered customers only.
+- The last quarter (Qtr 3 2026) is incomplete, so its drop should not be read as a decline.
+- Order counts for states and cities are read from the charts and are approximate.
+- The reasons given for the insights are likely explanations and need more data to confirm.
+
+## Files for this project
+
+```text
+├── report/
+│   └── Customer_Behaviour_Analysis_Final_Report.docx
+└── dashboards/
+    └── Padanjaly_Sales_Dashboards.pdf
 ```
