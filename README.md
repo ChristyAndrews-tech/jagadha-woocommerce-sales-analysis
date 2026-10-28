@@ -3,7 +3,7 @@
 A data cleaning and exploratory sales analysis project built in Power BI. It covers 690 orders from the Jagadha by Padanjaly WooCommerce store (January 2023 to May 2026) and ends in a one-page dashboard, a written report with insights, and business recommendations.
 
 ### Dashboard View
-👉 [Download / View Dashboard PDF - Page 1](dashboards/Padanjaly_Sales_Dashboards.pdf#page=1)
+👉 [Download / View Dashboard PDF - Page 1](Padanjaly_Sales_Dashboards.pdf)
 
 ## Project objective
 
@@ -85,8 +85,7 @@ Total Revenue USD = CALCULATE(SUM(Orders[order_subtotal]), Orders[order_currency
 ├── README.md
 ├── report/
 │   └── Jagadha_Sales_Analysis_Final_Report.docx
-└── dashboards/
-    └── Padanjaly_Sales_Dashboards.pdf
+└── Padanjaly_Sales_Dashboards.pdf
 ```
 
 ## Author
@@ -101,7 +100,7 @@ Data analysis project, October 2026
 A second Power BI dashboard, built on the same data, that looks at **where** the sales come from: by country, state and city.
 
 ### Dashboard View
-👉 [Location Sales Analysis dashboard - Page 2](dashboards/Padanjaly_Sales_Dashboards.pdf#page=2)
+👉 [Location Sales Analysis dashboard - Page 2](Padanjaly_Sales_Dashboards.pdf)
 
 ## Objective
 
@@ -162,15 +161,14 @@ International Revenue % = DIVIDE(CALCULATE([Total Revenue], 'Orders (2)'[billing
 ```
 ├── report/
 │   └── Location_Sales_Analysis_Final_Report.docx
-└── dashboards/
-    └── Padanjaly_Sales_Dashboards.pdf
+└── Padanjaly_Sales_Dashboards.pdf
 ```
 # Project 3: Product Performance Analysis
 
 A third Power BI dashboard, built on the same data, that looks at **which products drive revenue, how pack types perform over time, and which products sell best across different regions.**
 
 ### Dashboard View
-👉 [Product Performance Analysis dashboard - Page 3](dashboards/Padanjaly_Sales_Dashboards.pdf#page=3)
+👉 [Product Performance Analysis dashboard - Page 3](Padanjaly_Sales_Dashboards.pdf)
 
 ## Objective
 
@@ -237,15 +235,14 @@ Top Product in State = CONCATENATEX(TOPN(1, VALUES(Products[product_name]), [Qua
 ```text
 ├── report/
 │   └── Product_Performance_Analysis_Final_Report.docx
-└── dashboards/
-    └── Padanjaly_Sales_Dashboards.pdf
+└── Padanjaly_Sales_Dashboards.pdf
 ```
 # Project 4: Customer Behaviour Analysis
 
 A fourth Power BI dashboard, built on the same data, that looks at **who is buying, how often they come back, and where they are**: registered customers, guest orders, repeat buying and customer locations.
 
 ### Dashboard View
-👉 [Customer Behaviour Analysis dashboard - Page 4](dashboards/Padanjaly_Sales_Dashboards.pdf#page=4)
+👉 [Customer Behaviour Analysis dashboard - Page 4](Padanjaly_Sales_Dashboards.pdf)
 
 ## Objective
 
@@ -321,6 +318,5 @@ Order Frequency = IF(Customers[Orders] = 1, "One-time", "Repeat")
 ```text
 ├── report/
 │   └── Customer_Behaviour_Analysis_Final_Report.docx
-└── dashboards/
-    └── Padanjaly_Sales_Dashboards.pdf
+└── Padanjaly_Sales_Dashboards.pdf
 ```
